@@ -23,7 +23,7 @@ class ManageTodoController extends Controller
         $page = $request->input('page') ?? 1;
         $result = TodoList::when($search, function ($query) use ($search) {
             return $query->where('name', 'like', '%' . $search . '%');
-        })->paginate($paginate, ['*'], 'page', $page);
+        })->latest()->paginate($paginate, ['*'], 'page', $page);
         return customResponse(true, 200, 'User fetched successfully', $result);
     }
 
