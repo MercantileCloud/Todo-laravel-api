@@ -9,6 +9,9 @@ use App\Http\Controllers\api\ManageTodoController;
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
 // })->middleware('auth:sanctum');
+
+
+
 Route::post('login', [AuthController::class, 'login']);
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', [AuthController::class, 'login']);
@@ -21,11 +24,6 @@ Route::post('/forgot-password', [UserManageController::class, 'forgotPassword'])
 Route::get('/verify-token', [UserManageController::class, 'verifyToken']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-
-    // Route::get('/user', [UserManageController::class, 'index']);
-    // Route::post('/user', [UserManageController::class, 'store']);
-    // Route::put('/user/{id}', [UserManageController::class, 'update']);
-    // Route::delete('/user/{id}', [UserManageController::class, 'destroy']);
 
     Route::post('send-reinvitation', [UserManageController::class, 'sendReinvitation']);
 
