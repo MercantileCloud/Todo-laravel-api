@@ -8,6 +8,7 @@ use App\Models\PersonalAccessToken;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -54,9 +55,11 @@ class AuthController extends Controller
             ], 401);
         }
 
+        // i want token to be expired in 3 mins
         $token = $user->createToken(
             $request->device,
-            ['user']
+            ['user'],
+            Carbon::now()->addDays(7)
         )->plainTextToken;
         $user->setToken($token);
         $user = $user->toArray();

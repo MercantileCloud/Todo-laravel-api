@@ -14,6 +14,7 @@ class TodoList extends Model
         'title',
         'description',
         'user_id',
+        'deleted_at'
     ];
 
     public function user()

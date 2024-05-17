@@ -50,13 +50,6 @@ class ManageTodoController extends Controller
         ])->validate();
 
         $user = auth('sanctum')->user();
-        //check if user already exists
-        $result = TodoList::where('title', $request->title)
-            ->where('user_id', $user->id)
-            ->first();
-        if ($result) {
-            return customResponse(false, 400, 'Todo already exists');
-        }
 
         $result = new TodoList();
         $result->title = $request->title;
@@ -128,13 +121,14 @@ class ManageTodoController extends Controller
     public function destroy($id)
     {
         $user = auth('sanctum')->user();
-        $todo = TodoList::find($id)
-            ->where('user_id', $user->id)
-            ->first();
+        $todo = TodoList::find($id);
+        if ($todo->user_id != $user->id) {
+            return customResponse(false, 400, 'You are not authorized to delete this todo');
+        }
         if (!$todo) {
             return customResponse(false, 400, 'Todo not found');
         }
         $todo->delete();
-        return customResponse(true, 200, 'Todo deleted successfully');
+        return customResponse(true, 200, 'Todo deleted successfully', $todo);
     }
 }
